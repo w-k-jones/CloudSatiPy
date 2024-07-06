@@ -17,15 +17,15 @@ def filter_missing_values(
     da: xr.DataArray, missing_value: float, missop: str, fill_value: float = np.nan
 ) -> xr.DataArray:
     "<, <=, ==, >=, or >"
-    if missop == "==":
+    if missop == "==" or missop == "eq":
         wh_valid = da != np.float32(missing_value)
-    elif missop == "<":
+    elif missop == "<" or missop == "lt":
         wh_valid = da >= np.float32(missing_value)
-    elif missop == "<=":
+    elif missop == "<=" or missop == "le":
         wh_valid = da > np.float32(missing_value)
-    elif missop == ">=":
+    elif missop == ">=" or missop == "ge":
         wh_valid = da < np.float32(missing_value)
-    elif missop == ">":
+    elif missop == ">" or missop == "gt":
         wh_valid = da <= np.float32(missing_value)
     else:
         raise ValueError(f"Missop {missop} is not valid")

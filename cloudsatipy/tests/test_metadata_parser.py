@@ -1,5 +1,4 @@
 import pathlib
-import pytest
 from cloudsatipy.context_managers import *
 from cloudsatipy.metadata_parser import get_metadata
 

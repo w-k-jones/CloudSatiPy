@@ -1,0 +1,16 @@
+name: cloudsatipy
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy
+  - pandas
+  - xarray
+  - matplotlib
+  - ipykernel
+  - pyhdf
+  - black
+  - pytest
+  - scikit-learn
+  - pyproj
+  - cartopy

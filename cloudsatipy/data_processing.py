@@ -57,7 +57,16 @@ def apply_scale_and_offset(
     da.data = (da.data - np.float32(offset)) / np.float32(factor)
     return da
 
-def process_cloudsat_times(profile_time_seconds: xr.DataArray, utc_offset: xr.DataArray, file_timestamp: datetime) -> xr.DataArray:
-    start_time = np.datetime64(file_timestamp.strftime("%Y-%m-%dT00:00:00")) + np.timedelta64(int(utc_offset.item()*1e9), "ns")
-    profile_times = pd.DatetimeIndex(start_time + (profile_time_seconds.data*1e9).astype("timedelta64[ns]"))
+
+def process_cloudsat_times(
+    profile_time_seconds: xr.DataArray,
+    utc_offset: xr.DataArray,
+    file_timestamp: datetime,
+) -> xr.DataArray:
+    start_time = np.datetime64(
+        file_timestamp.strftime("%Y-%m-%dT00:00:00")
+    ) + np.timedelta64(int(utc_offset.item() * 1e9), "ns")
+    profile_times = pd.DatetimeIndex(
+        start_time + (profile_time_seconds.data * 1e9).astype("timedelta64[ns]")
+    )
     return profile_time_seconds.copy(data=profile_times)

@@ -93,9 +93,13 @@ class CloudsatReader:
                 if dim_name not in self.dimensions:
                     self.dimensions = dim_size
 
-        if self.geolocation_info.loc["Profile_time"]["size"] not in self.dimensions.values():
-            self.dimensions["Nray"] = int(self.geolocation_info.loc["Profile_time"]["size"])
-
+        if (
+            self.geolocation_info.loc["Profile_time"]["size"]
+            not in self.dimensions.values()
+        ):
+            self.dimensions["Nray"] = int(
+                self.geolocation_info.loc["Profile_time"]["size"]
+            )
 
         self._inverse_dimensions = dict(
             zip(self.dimensions.values(), self.dimensions.keys())
@@ -125,9 +129,17 @@ class CloudsatReader:
             self.data[name] = self._read_a_var(name, row["ref"], row["tag"])
         if "Profile_time" in self.data.data_vars:
             if "UTC_start" in self.data.data_vars:
-                self.data["Profile_time"] = process_cloudsat_times(self.data.Profile_time, self.data.UTC_start, self.file_info.start_date)
+                self.data["Profile_time"] = process_cloudsat_times(
+                    self.data.Profile_time,
+                    self.data.UTC_start,
+                    self.file_info.start_date,
+                )
             elif "TAI_start" in self.data.data_vars:
-                self.data["Profile_time"] = process_cloudsat_times(self.data.Profile_time, self.data.TAI_start, self.file_info.start_date)
+                self.data["Profile_time"] = process_cloudsat_times(
+                    self.data.Profile_time,
+                    self.data.TAI_start,
+                    self.file_info.start_date,
+                )
         self.data = self.data.set_coords(self.geolocation_info.index)
 
     def read_data(self, variable: Optional[str | list[str]] = None):
@@ -154,8 +166,8 @@ class CloudsatReader:
                 self.data[varname] = self._read_a_var(varname, row["ref"], row["tag"])
 
     def standardise_dims(self):
-        """Change dims to a standard format, rather than the different dim names 
-        provided with different cloudsat files 
+        """Change dims to a standard format, rather than the different dim names
+        provided with different cloudsat files
         """
-        dim_mapping = {dim:dim.split(":")[0].lower().title() for dim in self.data.dims}
+        dim_mapping = {dim: dim.split(":")[0].lower().title() for dim in self.data.dims}
         self.data = self.data.swap_dims(dim_mapping)

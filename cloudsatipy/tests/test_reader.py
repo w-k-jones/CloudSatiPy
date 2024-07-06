@@ -10,6 +10,6 @@ test_file = pathlib.Path(
 def test_init_cloudsatreader():
     test_files = pathlib.Path("/Users/jonesw/python/CloudSatiPy/data/").glob("*.hdf")
 
-    for file in test_files:
-        reader = CloudsatReader(file)
+    for test_file in test_files:
+        reader = CloudsatReader(test_file)
         reader.read_data()

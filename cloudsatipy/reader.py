@@ -147,3 +147,10 @@ class CloudsatReader:
 
             for varname, row in self.data_info.loc[variable].iterrows():
                 self.data[varname] = self._read_a_var(varname, row["ref"], row["tag"])
+
+    def standardise_dims(self):
+        """Change dims to a standard format, rather than the different dim names 
+        provided with different cloudsat files 
+        """
+        dim_mapping = {dim:dim.split(":")[0].lower().title() for dim in self.data.dims}
+        self.data = self.data.swap_dims(dim_mapping)

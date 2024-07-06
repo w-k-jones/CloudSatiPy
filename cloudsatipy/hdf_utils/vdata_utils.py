@@ -31,7 +31,7 @@ def vdata_info(vs, ref):
     return info
 
 
-def get_vdata_value(vs: VS.VS, ref: str | int) -> np.ndarray:
+def get_vdata_array(vs: VS.VS, ref: str | int) -> np.ndarray:
     with vdata_manager(vs, ref) as vd:
         values = read_vdata_array(vd)
     return values

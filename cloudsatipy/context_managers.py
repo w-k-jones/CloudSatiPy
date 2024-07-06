@@ -28,7 +28,7 @@ def _find_ref_from_name(vdata_or_vgroup: VS.VS | V.V, name_or_ref: str | int) ->
     if isinstance(name_or_ref, str):
         ref = vdata_or_vgroup.find(name_or_ref)
     else:
-        ref = name_or_ref
+        ref = int(name_or_ref)
     return ref
 
 
@@ -36,7 +36,7 @@ def _name_or_ref_to_index(sd: SD.SD, name_or_ref: str | int) -> int:
     if isinstance(name_or_ref, str):
         index = sd.nametoindex(name_or_ref)
     else:
-        index = sd.reftoindex(name_or_ref)
+        index = sd.reftoindex(int(name_or_ref))
     return index
 
 

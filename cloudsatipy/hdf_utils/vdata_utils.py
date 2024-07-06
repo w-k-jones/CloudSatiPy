@@ -30,10 +30,12 @@ def vdata_info(vs, ref):
         }
     return info
 
+
 def get_vdata_value(vs: VS.VS, ref: str | int) -> np.ndarray:
     with vdata_manager(vs, ref) as vd:
         values = read_vdata_array(vd)
     return values
+
 
 def read_vdata_array(vd: VS.VD) -> np.ndarray:
     vd_type = vd.fieldinfo()[0][1]

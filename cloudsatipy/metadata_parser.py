@@ -30,7 +30,7 @@ def get_metadata(swath_attributes_vgroup: V.VG, vstart: VS.VS) -> tuple[dict, di
                 varname, attrname = name.split(".")
                 # Check unit attrs as sometimes a single character can be concerted to a int value
                 if attrname == "units":
-                    try: 
+                    try:
                         variable = chr(int(variable))
                     except ValueError:
                         pass

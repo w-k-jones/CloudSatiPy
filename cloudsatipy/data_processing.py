@@ -4,6 +4,7 @@
 import numpy as np
 import xarray as xr
 
+
 def mask_and_scale_da(da: xr.DataArray, fill_value=np.nan) -> xr.DataArray:
     if "missing" in da.attrs and "missop" in da.attrs:
         da = filter_missing_values(da, da.missing, da.missop, fill_value=fill_value)
@@ -11,8 +12,11 @@ def mask_and_scale_da(da: xr.DataArray, fill_value=np.nan) -> xr.DataArray:
         da = apply_scale_and_offset(da, da.factor, da.offset)
     return da
 
-def filter_missing_values(da: xr.DataArray, missing_value: float, missop: str, fill_value: float = np.nan) -> xr.DataArray:
-    " <, <=, ==, >=, or >"
+
+def filter_missing_values(
+    da: xr.DataArray, missing_value: float, missop: str, fill_value: float = np.nan
+) -> xr.DataArray:
+    "<, <=, ==, >=, or >"
     if missop == "==":
         wh_valid = da != np.float32(missing_value)
     elif missop == "<":
@@ -24,11 +28,14 @@ def filter_missing_values(da: xr.DataArray, missing_value: float, missop: str, f
     elif missop == ">":
         wh_valid = da <= np.float32(missing_value)
     else:
-        raise ValueError(f'Missop {missop} is not valid')
+        raise ValueError(f"Missop {missop} is not valid")
     return da.where(wh_valid, other=np.float32(fill_value))
 
-def apply_scale_and_offset(da: xr.DataArray, factor: float, offset: float) -> xr.DataArray:
-    """Apply scale and offset to Cloudsat data. This is applied the opposite way 
+
+def apply_scale_and_offset(
+    da: xr.DataArray, factor: float, offset: float
+) -> xr.DataArray:
+    """Apply scale and offset to Cloudsat data. This is applied the opposite way
     to standard...
 
     Parameters

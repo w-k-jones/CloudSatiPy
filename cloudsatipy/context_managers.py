@@ -2,7 +2,8 @@
 """
 
 from contextlib import contextmanager
-from pyhdf import HDF, SD
+import pathlib
+from pyhdf import HDF, VS, V, SD
 
 __all__ = [
     "hdf_manager",
@@ -15,17 +16,25 @@ __all__ = [
 ]
 
 
-def _find_ref_from_name(file, name_or_ref):
+def _check_if_pathlib(filename: str | pathlib.Path) -> str:
+    if isinstance(filename, pathlib.Path) or issubclass(type(filename), pathlib.Path):
+        file_str = str(filename)
+    else:
+        file_str = filename
+    return file_str
+
+
+def _find_ref_from_name(vdata_or_vgroup: VS.VS | V.V, name_or_ref: str | int) -> int:
     if isinstance(name_or_ref, str):
-        ref = file.find(name_or_ref)
+        ref = vdata_or_vgroup.find(name_or_ref)
     else:
         ref = name_or_ref
     return ref
 
 
 @contextmanager
-def hdf_manager(filename):
-    datafile = HDF.HDF(filename)
+def hdf_manager(filename: str | pathlib.Path) -> HDF.HDF:
+    datafile = HDF.HDF(_check_if_pathlib(filename))
     try:
         yield datafile
     finally:
@@ -33,7 +42,7 @@ def hdf_manager(filename):
 
 
 @contextmanager
-def vgstart_manager(datafile):
+def vgstart_manager(datafile: HDF.HDF) -> V.V:
     v = datafile.vgstart()
     try:
         yield v
@@ -42,7 +51,7 @@ def vgstart_manager(datafile):
 
 
 @contextmanager
-def vgroup_manager(v, name_or_ref):
+def vgroup_manager(v: V.V, name_or_ref: str | int) -> V.VG:
     vg = v.attach(_find_ref_from_name(v, name_or_ref))
     try:
         yield vg
@@ -51,7 +60,7 @@ def vgroup_manager(v, name_or_ref):
 
 
 @contextmanager
-def vstart_manager(datafile):
+def vstart_manager(datafile: HDF.HDF) -> VS.VS:
     vs = datafile.vstart()
     try:
         yield vs
@@ -60,7 +69,7 @@ def vstart_manager(datafile):
 
 
 @contextmanager
-def vdata_manager(vs, name_or_ref):
+def vdata_manager(vs: VS.VS, name_or_ref: str | int) -> VS.VD:
     vd = vs.attach(_find_ref_from_name(vs, name_or_ref))
     try:
         yield vd
@@ -69,8 +78,8 @@ def vdata_manager(vs, name_or_ref):
 
 
 @contextmanager
-def sd_manager(filename):
-    sd = SD(filename)
+def sd_manager(filename: str | pathlib.Path) -> SD.SD:
+    sd = SD.SD(_check_if_pathlib(filename))
     try:
         yield sd
     finally:
@@ -78,7 +87,7 @@ def sd_manager(filename):
 
 
 @contextmanager
-def sds_manager(sd, ref):
+def sds_manager(sd: SD.SD, ref: int) -> SD.SDS:
     sds = sd.select(sd.reftoindex(ref))
     try:
         yield sds

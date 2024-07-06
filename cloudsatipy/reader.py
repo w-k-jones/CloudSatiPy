@@ -29,9 +29,9 @@ class CloudsatReader:
             self._get_vgroup_info_df()
             self._check_vgroup_info()
             self._get_metadata()
-            self._get_dimensions()
             self._get_geolocation_info()
             self._get_data_info()
+            self._get_dimensions()
             self._read_geolocation_data()
 
     def _get_vgroup_info_df(self):
@@ -87,6 +87,15 @@ class CloudsatReader:
                 self.dimensions[dimension["name"]] = get_vdata_array(
                     self.vs, vdata_ref
                 ).item()
+
+        for sds_info in self.sd.datasets().values():
+            for dim_name, dim_size in zip(sds_info[0], sds_info[1]):
+                if dim_name not in self.dimensions:
+                    self.dimensions = dim_size
+
+        if self.geolocation_info.loc["Profile_time"]["size"] not in self.dimensions.values():
+            self.dimensions["Nray"] = int(self.geolocation_info.loc["Profile_time"]["size"])
+
 
         self._inverse_dimensions = dict(
             zip(self.dimensions.values(), self.dimensions.keys())

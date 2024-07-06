@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='cloudsatip',
+    name='cloudsatipy',
     version='0.0.1',
     url='https://github.com/w-k-jones/CloudSatiPy.git',
     author='William Jones',

@@ -32,6 +32,14 @@ def _find_ref_from_name(vdata_or_vgroup: VS.VS | V.V, name_or_ref: str | int) ->
     return ref
 
 
+def _name_or_ref_to_index(sd: SD.SD, name_or_ref: str | int) -> int:
+    if isinstance(name_or_ref, str):
+        index = sd.nametoindex(name_or_ref)
+    else:
+        index = sd.reftoindex(name_or_ref)
+    return index
+
+
 @contextmanager
 def hdf_manager(filename: str | pathlib.Path) -> HDF.HDF:
     datafile = HDF.HDF(_check_if_pathlib(filename))
@@ -87,8 +95,8 @@ def sd_manager(filename: str | pathlib.Path) -> SD.SD:
 
 
 @contextmanager
-def sds_manager(sd: SD.SD, ref: int) -> SD.SDS:
-    sds = sd.select(sd.reftoindex(ref))
+def sds_manager(sd: SD.SD, name_or_ref: str | int) -> SD.SDS:
+    sds = sd.select(_name_or_ref_to_index(sd, name_or_ref))
     try:
         yield sds
     finally:

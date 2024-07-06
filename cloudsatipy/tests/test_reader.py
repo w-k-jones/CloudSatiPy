@@ -1,11 +1,8 @@
 import pathlib
 
+import numpy as np
+
 from cloudsatipy.reader import CloudsatReader
-
-test_file = pathlib.Path(
-    "/Users/jonesw/python/CloudSatiPy/data/2010195112321_22399_CS_2B-CWC-RVOD_GRANULE_P1_R05_E03_F00.hdf"
-)
-
 
 def test_init_cloudsatreader():
     test_files = pathlib.Path("/Users/jonesw/python/CloudSatiPy/data/").glob("*.hdf")
@@ -13,3 +10,4 @@ def test_init_cloudsatreader():
     for test_file in test_files:
         reader = CloudsatReader(test_file)
         reader.read_data()
+        assert np.issubdtype(reader.data.Profile_time.dtype, np.datetime64), "Profile time not converted to datetimes correctly"

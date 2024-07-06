@@ -8,7 +8,7 @@ import xarray as xr
 from pyhdf.HDF import HC
 
 from cloudsatipy.context_managers import *
-from cloudsatipy.data_processing import mask_and_scale_da
+from cloudsatipy.data_processing import mask_and_scale_da, process_cloudsat_times
 from cloudsatipy.filename_parser import parse_filename
 from cloudsatipy.hdf_utils.sdata_utils import get_sdata_dataarray
 from cloudsatipy.hdf_utils.vdata_utils import get_vdata_array
@@ -123,6 +123,11 @@ class CloudsatReader:
     def _read_geolocation_data(self):
         for name, row in self.geolocation_info.iterrows():
             self.data[name] = self._read_a_var(name, row["ref"], row["tag"])
+        if "Profile_time" in self.data.data_vars:
+            if "UTC_start" in self.data.data_vars:
+                self.data["Profile_time"] = process_cloudsat_times(self.data.Profile_time, self.data.UTC_start, self.file_info.start_date)
+            elif "TAI_start" in self.data.data_vars:
+                self.data["Profile_time"] = process_cloudsat_times(self.data.Profile_time, self.data.TAI_start, self.file_info.start_date)
         self.data = self.data.set_coords(self.geolocation_info.index)
 
     def read_data(self, variable: Optional[str | list[str]] = None):

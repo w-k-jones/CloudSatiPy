@@ -77,6 +77,9 @@ REPLACE_MISSING = {
 REPLACE_MISSOP = {
     "CloudFraction":"<=",
     "DistanceAvg":"<=",
+    "dBZe_simulation":"==",
+    "zone":"==",
+    "ze_makeup":"==",
     "EV_1KM_RefSB":"eq",
     "EV_1KM_Emissive":"eq",
     "EV_1KM_Emissive_Uncert_Indexes":"eq",

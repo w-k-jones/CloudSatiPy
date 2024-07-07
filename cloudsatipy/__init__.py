@@ -32,5 +32,5 @@ def open_cloudsat(
     reader = CloudsatReader(filename)
     reader.read_data(variable)
     if standardise_dims:
-        reader.standardise_dims
+        reader.standardise_dims()
     return reader.data

@@ -36,3 +36,50 @@ SDC_TYPES = {
     SDC.UINT32: np.uint32,
     SDC.UINT8: np.uint8,
 }
+
+# Erroneous fill values
+REPLACE_MISSING = {
+    "DEM_elevation":-9999,
+    "SurfaceClutter_Index":-99,
+    "QR":-9999,
+    "RH":-999,
+    "COD":-99990,
+    "Meansolar":-999,
+    "Sigmasolar":-999,
+    "MeanOSR":-999,
+    "SigmaOSR":-999,
+    "MeanSSR":-999,
+    "SigmaSSR":-999,
+    "MeanSFCR":-999,
+    "SigmaSFCR":-999,
+    "MeanOLR":-999,
+    "SigmaOLR":-999,
+    "MeanSLR":-999,
+    "SigmaSLR":-999,
+    "MeanSFCE":-999,
+    "SigmaSFCE":-999,
+    "MeanQLW":-999,
+    "SigmaQLW":-999,
+    "MeanQSW":-999,
+    "SigmaQSW":-999,
+    "CloudFraction":-8,
+    "DistanceAvg":-8,
+    "dBZe_simulation":-9999,
+    "zone":-9999,
+    "ze_makeup":-9999,
+    "Near_surface_reflectivity":-999,
+    "Frozen_precip_height":-999,
+    "Freezing_level": -8,
+    "SST":-999,
+
+}
+
+REPLACE_MISSOP = {
+    "CloudFraction":"<=",
+    "DistanceAvg":"<=",
+    "EV_1KM_RefSB":"eq",
+    "EV_1KM_Emissive":"eq",
+    "EV_1KM_Emissive_Uncert_Indexes":"eq",
+    "EV_250_RefSB":"eq",
+    "EV_500_RefSB":"eq",
+}

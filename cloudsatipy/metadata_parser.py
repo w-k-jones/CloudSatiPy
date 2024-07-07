@@ -4,7 +4,7 @@
 from pyhdf import V, VS
 from cloudsatipy.context_managers import vdata_manager
 from cloudsatipy.hdf_utils.vdata_utils import read_vdata_array
-
+from cloudsatipy._CONSTANTS import REPLACE_MISSING, REPLACE_MISSOP
 
 def get_metadata(swath_attributes_vgroup: V.VG, vstart: VS.VS) -> tuple[dict, dict]:
     global_attrs = {}
@@ -40,5 +40,13 @@ def get_metadata(swath_attributes_vgroup: V.VG, vstart: VS.VS) -> tuple[dict, di
                     variable_attrs[varname][attrname] = variable
             else:
                 global_attrs[name] = variable
+
+    # Fix wrong fill value provided for DEM_elevation variable
+    for var in variable_attrs:
+        if var in REPLACE_MISSING:
+            variable_attrs[var]["_FillValue"] = REPLACE_MISSING[var]
+            variable_attrs[var]["missing"] = REPLACE_MISSING[var]
+        if var in REPLACE_MISSOP:
+            variable_attrs[var]["missop"] = REPLACE_MISSOP[var]
 
     return global_attrs, variable_attrs

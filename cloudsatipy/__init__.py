@@ -4,7 +4,7 @@ from typing import Optional
 import xarray as xr
 
 from cloudsatipy.reader import CloudsatReader
-
+from cloudsatipy.layers_to_mask import construct_cloud_type_mask
 
 def open_cloudsat(
     filename: str | pathlib.Path,
